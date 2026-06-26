@@ -92,16 +92,28 @@ module.exports = (client, config) => {
 
   const rest = new REST({ version: '10' }).setToken(config.Client.TOKEN || process.env.TOKEN);
 
+  // Optional: register to a single guild for INSTANT updates while testing.
+  // Set DEV_GUILD_ID (env var or config.Client.DEV_GUILD_ID) to your test server's ID.
+  // Leave it unset for normal global registration (can take up to ~1h to propagate).
+  const devGuildId = process.env.DEV_GUILD_ID || config.Client.DEV_GUILD_ID;
+
   (async () => {
-    console.log('[HANDLER] Started registering all the application commands.'.yellow);
-
     try {
-      await rest.put(
-        Routes.applicationCommands(config.Client.ID),
-        { body: commands }
-      );
-
-      console.log('[HANDLER] Successfully registered all the application commands.'.brightGreen);
+      if (devGuildId) {
+        console.log(`[HANDLER] Registering ${commands.length} command(s) to dev guild ${devGuildId} (instant).`.yellow);
+        await rest.put(
+          Routes.applicationGuildCommands(config.Client.ID, devGuildId),
+          { body: commands }
+        );
+        console.log('[HANDLER] Successfully registered all the guild application commands.'.brightGreen);
+      } else {
+        console.log('[HANDLER] Started registering all the application commands.'.yellow);
+        await rest.put(
+          Routes.applicationCommands(config.Client.ID),
+          { body: commands }
+        );
+        console.log('[HANDLER] Successfully registered all the application commands.'.brightGreen);
+      }
     } catch (err) {
       console.log(err);
     }

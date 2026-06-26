@@ -1,33 +1,20 @@
 const { Client, Partials, Collection, GatewayIntentBits } = require('discord.js');
 const config = require('./config/config');
 const colors = require("colors");
-const execSync = require("child_process").execSync;
-const exitHook = require('async-exit-hook');
+const fs = require("fs");
 
-execSync("./utility/create_support_page_commands_on_demand.sh " + config.SupportPages.PAGE_COUNT, {stdio: 'inherit'});
-
-exitHook(() => {
-	console.log('\n');
-	execSync("./utility/create_support_page_commands_on_demand.sh 0", {stdio: 'inherit'});
-	console.log('Exiting Bot');
-});
+// Ensure the SQLite database directory exists (created on first run / fresh deploys).
+fs.mkdirSync("db", { recursive: true });
 
 // Creating a new client:
 const client = new Client({
+	// Slash commands need no privileged intents; Guilds is enough for command
+	// routing and guild/channel caching.
 	intents: [
 		GatewayIntentBits.Guilds,
-		GatewayIntentBits.GuildMessages,
-		GatewayIntentBits.GuildPresences,
-		GatewayIntentBits.GuildMessageReactions,
-		GatewayIntentBits.DirectMessages,
-		GatewayIntentBits.MessageContent,
 	],
 	partials: [
-		Partials.Channel,
-		Partials.Message,
-		Partials.User,
-		Partials.GuildMember,
-		Partials.Reaction
+		Partials.Channel
 	],
 	presence: {
 		activities: [{
@@ -49,7 +36,6 @@ if (!AuthenticationToken) {
 };
 
 // Handler:
-client.prefix_commands = new Collection();
 client.slash_commands = new Collection();
 client.user_commands = new Collection();
 client.message_commands = new Collection();
@@ -58,7 +44,7 @@ client.events = new Collection();
 
 module.exports = client;
 
-["prefix", "application_commands", "modals", "events", "mongoose"].forEach((file) => {
+["application_commands", "modals", "events", "mongoose"].forEach((file) => {
 	require(`./handlers/${file}`)(client, config);
 });
 

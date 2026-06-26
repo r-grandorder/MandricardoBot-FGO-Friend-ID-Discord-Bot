@@ -5,6 +5,7 @@ config/config.js
 .vscode
 .vscode/settings.json
 json.sqlite
-config/config.js
+db/
 docker-compose.yml
 _output
+*.swp
