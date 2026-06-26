@@ -1,6 +1,10 @@
 const { Client, Partials, Collection, GatewayIntentBits } = require('discord.js');
 const config = require('./config/config');
 const colors = require("colors");
+const fs = require("fs");
+
+// Ensure the SQLite database directory exists (created on first run / fresh deploys).
+fs.mkdirSync("db", { recursive: true });
 
 // Creating a new client:
 const client = new Client({
