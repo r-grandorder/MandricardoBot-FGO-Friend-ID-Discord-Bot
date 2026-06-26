@@ -3,7 +3,7 @@ FROM alpine:latest
 # Setup Work directory.
 WORKDIR /usr/src/bot
 COPY package.json ./
-COPY utility/pagination_remove_button_mod.sh utility/str_replace.pl utility/create_support_page_commands_on_demand.sh ./utility/
+COPY utility/pagination_remove_button_mod.sh utility/str_replace.pl ./utility/
 
 # Let's install everything!
 RUN apk add --update \
@@ -12,7 +12,7 @@ RUN apk add --update \
     && apk add --no-cache perl \
     && apk add --no-cache --virtual .build git curl build-base g++ \
     && npm install \
-    && chmod +x ./utility/pagination_remove_button_mod.sh ./utility/str_replace.pl ./utility/create_support_page_commands_on_demand.sh \
+    && chmod +x ./utility/pagination_remove_button_mod.sh ./utility/str_replace.pl \
     && ./utility/pagination_remove_button_mod.sh \
     && apk del .build
 

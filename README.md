@@ -11,12 +11,26 @@ A Discord bot project for saving FGO profile for easy sharing using the latest D
 • 2- Create a new application and choose it's name. <br>
 • 3- Put your application's avatar (not important).<br>
 • 4- Go to `Bot` section and turn your application into a bot. <br>
-• 5- Scroll down and enable the three disabled `Privileged Gateaway Intents` intents (`PRESENCE INTENT`, `SERVER MEMBERS INTENT`, and `MESSAGE CONTENT INTENT`).<br>
+• 5- This bot uses **slash commands**, so **no Privileged Gateway Intents are required**. You can leave `PRESENCE INTENT`, `SERVER MEMBERS INTENT`, and `MESSAGE CONTENT INTENT` **disabled**.<br>
 • 6- Go to `OAuth2` section, and then `URL Generator`. Select the scopes `bot` and `application.commands`, and then scroll down to **Bot Permissions**, select `Administrator` (For all guild permissions). Copy the link that is generated below, open a new browser tab, paste the URL, choose a server where your bot will be in, verify yourself that you are not a robot, and Done!
 
 ## Instructions
 1. Rename `config.js.example` to ``config.js` under `config/` directory. 
 2. Correctly fill out the fields, note the `MONGO` field is unused in this project, instead an SQLite DB is instantiated and used via the QuickDB package.
+
+## Commands
+All interaction is via **slash commands** (no message-content prefix commands). Commands are registered globally on startup, which can take a short while to appear after first run.
+
+| Command | What it does |
+| --- | --- |
+| `/en-profile [user]` | View a saved FGO **EN** profile — yours, or another player's if `user` is given. |
+| `/jp-profile [user]` | View a saved FGO **JP** profile. |
+| `/en-profile-edit` | Save/edit your **EN** profile. Options: `name` (IGN), `id` (Friend ID), `privacy`, and `support1`…`supportN` image uploads (one per page). |
+| `/jp-profile-edit` | Save/edit your **JP** profile (same options). |
+| `/en-profile-edit-support` | Set one **EN** support page: `page` (required) + an `image` upload **or** an image `url`. |
+| `/jp-profile-edit-support` | Set one **JP** support page (same options). |
+
+The number of support pages is controlled by `SupportPages.PAGE_COUNT` in `config.js`.
 
 ## Run bot in a shell:
 
