@@ -16,15 +16,7 @@ module.exports = {
     DEV_GUILD_ID: "" // OPTIONAL: a test server ID. If set, slash commands register to that guild INSTANTLY (great for testing). Leave empty for global registration. Can also be set via the DEV_GUILD_ID env var.
   },
 
-  ProfileView: {
-		TIMEOUT: 900000 // FGO EN/JP-Profile Timeout period in ms (set to 15 mins here)
-	},
-
-	EditProfileView: {
-		TIMEOUT: 60000 // FGO EN/JP-Profile-Edit Timeout Period after someone edits their profile in ms (set to 1 min here)
-	},
-
-	SupportPages: {
-		PAGE_COUNT: 6 // Number of support pages to instantiate
-	}
+  SupportPages: {
+    PAGE_COUNT: 6 // Number of support pages to instantiate
+  }
 }

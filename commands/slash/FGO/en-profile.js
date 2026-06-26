@@ -36,7 +36,7 @@ module.exports = {
             //   if (isOther && data.privacy === true) return interaction.reply({ content: 'This player has set their profile to private.', ephemeral: true });
 
             // No defer: the pagination helper makes the public reply() itself.
-            util.fgoProfiles(target, data, interaction, config.ProfileView.TIMEOUT, false, PAGE_COUNT);
+            await util.fgoProfiles(target, data, interaction, 'en', false, PAGE_COUNT);
         } catch (err) {
             console.error('[EN-PROFILE]', err);
             if (!interaction.replied && !interaction.deferred) {

@@ -50,7 +50,7 @@ module.exports = {
             await db.set(key, JSON.stringify(profile));
 
             // editedprofile=true -> always >=2 pages -> the helper editReplies the deferred response.
-            util.fgoProfiles(interaction.user, profile, interaction, config.EditProfileView.TIMEOUT, true, PAGE_COUNT);
+            await util.fgoProfiles(interaction.user, profile, interaction, 'jp', true, PAGE_COUNT);
             interaction.followUp({ content: 'Profile saved successfully.', ephemeral: true }).catch(() => {});
         } catch (err) {
             console.error('[JP-PROFILE-EDIT]', err);
