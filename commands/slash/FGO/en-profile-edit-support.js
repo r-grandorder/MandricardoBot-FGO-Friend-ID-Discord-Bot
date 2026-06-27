@@ -36,7 +36,7 @@ module.exports = {
             console.log(`[EN-PROFILE-EDIT-SUPPORT] page ${page} by ${interaction.user.id}`);
             await db.set(key, JSON.stringify(profile));
 
-            util.fgoProfiles(interaction.user, profile, interaction, config.EditProfileView.TIMEOUT, true, PAGE_COUNT);
+            await util.fgoProfiles(interaction.user, profile, interaction, 'en', PAGE_COUNT);
             interaction.followUp({ content: 'Profile saved successfully.', ephemeral: true }).catch(() => {});
         } catch (err) {
             console.error('[EN-PROFILE-EDIT-SUPPORT]', err);

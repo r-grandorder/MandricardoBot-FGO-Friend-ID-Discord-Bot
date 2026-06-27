@@ -49,8 +49,8 @@ module.exports = {
             console.log(`[EN-PROFILE-EDIT] by ${interaction.user.id}`, profile);
             await db.set(key, JSON.stringify(profile));
 
-            // editedprofile=true -> always >=2 pages -> the helper editReplies the deferred response.
-            util.fgoProfiles(interaction.user, profile, interaction, config.EditProfileView.TIMEOUT, true, PAGE_COUNT);
+            // Deferred above, so the helper editReplies. Only pages with images are shown.
+            await util.fgoProfiles(interaction.user, profile, interaction, 'en', PAGE_COUNT);
             interaction.followUp({ content: 'Profile saved successfully.', ephemeral: true }).catch(() => {});
         } catch (err) {
             console.error('[EN-PROFILE-EDIT]', err);
