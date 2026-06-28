@@ -26,6 +26,8 @@ function fgoProfileEmbed(user, data, image) {
     { name: 'IGN', value: data.name || "Not Provided" },
     { name: 'Friend ID', value: data.id || "Not Provided" },
   );
+  // Optional free-text note. Only shown when set, so existing profiles are unchanged.
+  if (data.description) embed.addFields({ name: 'Description', value: data.description });
   if (image) embed.setImage(image);
   return embed;
 }

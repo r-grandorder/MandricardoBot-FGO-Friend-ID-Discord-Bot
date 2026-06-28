@@ -6,6 +6,7 @@ const PAGE_COUNT = cfg.SupportPages.PAGE_COUNT;
 const options = [
     { name: 'name', description: 'Your in-game name (IGN).', type: 3, required: false },
     { name: 'id', description: 'Your Friend ID.', type: 3, required: false },
+    { name: 'description', description: 'A short note shown below your IGN and Friend ID (blank to clear).', type: 3, required: false, max_length: 1000 },
     { name: 'privacy', description: 'Hide your profile from others (true = private).', type: 5, required: false },
 ];
 for (let i = 1; i <= PAGE_COUNT; i++) {
@@ -14,7 +15,7 @@ for (let i = 1; i <= PAGE_COUNT; i++) {
 
 module.exports = {
     name: 'jp-profile-edit',
-    description: 'Save or edit your FGO JP profile (IGN, Friend ID, support images, privacy).',
+    description: 'Save or edit your FGO JP profile (IGN, Friend ID, description, support images, privacy).',
     type: 1,
     options,
     permissions: {
@@ -33,9 +34,16 @@ module.exports = {
             let modified = false;
             const name = interaction.options.getString('name');
             const id = interaction.options.getString('id');
+            const description = interaction.options.getString('description');
             const privacy = interaction.options.getBoolean('privacy'); // null when omitted
             if (name !== null) { profile.name = name; modified = true; }
             if (id !== null) { profile.id = id; modified = true; }
+            if (description !== null) {
+                // Trim, then treat a now-empty value as "clear the note".
+                const trimmed = description.trim();
+                if (trimmed) profile.description = trimmed; else delete profile.description;
+                modified = true;
+            }
             if (privacy !== null) { profile.privacy = privacy; modified = true; }
             for (let i = 1; i <= PAGE_COUNT; i++) {
                 const att = interaction.options.getAttachment(`support${i}`);
@@ -43,7 +51,7 @@ module.exports = {
             }
 
             if (!modified) {
-                return interaction.editReply('Provide at least one field to update (name, id, privacy, or a support image).');
+                return interaction.editReply('Provide at least one field to update (name, id, description, privacy, or a support image).');
             }
 
             console.log(`[JP-PROFILE-EDIT] by ${interaction.user.id}`, profile);

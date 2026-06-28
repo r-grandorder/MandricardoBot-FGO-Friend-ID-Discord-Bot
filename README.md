@@ -25,7 +25,7 @@ All interaction is via **slash commands** (no message-content prefix commands). 
 | --- | --- |
 | `/en-profile [user]` | View a saved FGO **EN** profile — yours, or another player's if `user` is given. |
 | `/jp-profile [user]` | View a saved FGO **JP** profile. |
-| `/en-profile-edit` | Save/edit your **EN** profile. Options: `name` (IGN), `id` (Friend ID), `privacy`, and `support1`…`supportN` image uploads (one per page). |
+| `/en-profile-edit` | Save/edit your **EN** profile. Options: `name` (IGN), `id` (Friend ID), `description` (a short note shown below IGN/Friend ID; leave blank to clear), `privacy`, and `support1`…`supportN` image uploads (one per page). |
 | `/jp-profile-edit` | Save/edit your **JP** profile (same options). |
 | `/en-profile-edit-support` | Set one **EN** support page: `page` (required) + an `image` upload **or** an image `url`. |
 | `/jp-profile-edit-support` | Set one **JP** support page (same options). |
