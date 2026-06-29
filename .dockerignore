@@ -1,0 +1,20 @@
+# Host-built native modules (glibc) must never enter the musl image; they are
+# rebuilt inside the container.
+node_modules
+
+# Version control and CI metadata.
+.git
+.gitignore
+.github
+
+# Secrets and runtime data: mounted at run time, never baked in. See docs/docker.md.
+config/config.js
+db
+
+# Docs and local-only tooling, not needed at runtime.
+docs
+*.md
+Installation Guide
+.nvmrc
+Dockerfile
+.dockerignore
