@@ -135,4 +135,32 @@ async function handlePaginationButton(client, interaction, db, pageCount) {
   return interaction.update(renderPayload(pages, user, locale, page));
 }
 
-module.exports = { fgoProfiles, fgoProfileEmbed, handlePaginationButton, isProfilePaginationId, PAGINATION_PREFIX };
+// Files uploaded through slash-command attachment options live at
+// cdn.discordapp.com/ephemeral-attachments/... and Discord deletes them after a
+// few days, which silently breaks saved profile images. Re-post the uploaded
+// image(s) as a normal message in `channel` so the resulting attachment URLs are
+// persistent (Discord keeps re-serving those indefinitely, like any channel
+// attachment), and return the new URLs in the same order. The storage message
+// must not be deleted or the images break again. Returns { urls, persisted }:
+// on success urls holds the persistent links and persisted is true; on any
+// failure the original URLs are returned with persisted=false so the save still
+// succeeds (no worse than before) while letting the caller warn the user.
+async function rehostImages(channel, urls) {
+  if (!channel || !urls || !urls.length) return { urls, persisted: false };
+  try {
+    const msg = await channel.send({ files: urls });
+    const hosted = [...msg.attachments.values()].map((a) => a.url);
+    if (hosted.length === urls.length) return { urls: hosted, persisted: true };
+    console.warn(`[REHOST] expected ${urls.length} attachment(s), got ${hosted.length}; keeping originals`);
+    return { urls, persisted: false };
+  } catch (err) {
+    console.warn('[REHOST] re-host failed, keeping original URLs:', err.message);
+    return { urls, persisted: false };
+  }
+}
+
+// Appended to the user-facing confirmation when an upload could not be re-hosted
+// (see rehostImages), so the user knows the image may not survive.
+const REHOST_FALLBACK_NOTE = ' Heads up: I could not store your uploaded image permanently, so it may stop loading in a few days. Check that I have the Send Messages and Attach Files permissions in this channel and that the image is not too large.';
+
+module.exports = { fgoProfiles, fgoProfileEmbed, handlePaginationButton, isProfilePaginationId, rehostImages, REHOST_FALLBACK_NOTE, PAGINATION_PREFIX };
