@@ -25,12 +25,14 @@ All interaction is via **slash commands** (no message-content prefix commands). 
 | --- | --- |
 | `/en-profile [user]` | View a saved FGO **EN** profile — yours, or another player's if `user` is given. |
 | `/jp-profile [user]` | View a saved FGO **JP** profile. |
-| `/en-profile-edit` | Save/edit your **EN** profile. Options: `name` (IGN), `id` (Friend ID), `privacy`, and `support1`…`supportN` image uploads (one per page). |
+| `/en-profile-edit` | Save/edit your **EN** profile. Options: `name` (IGN), `id` (Friend ID), `description` (a short note shown below IGN/Friend ID), `clear_description` (remove that note), `privacy`, `support1`…`supportN` image uploads (one per page), and `clear_supports` (page number(s) to remove, e.g. `1,3` or `all`). |
 | `/jp-profile-edit` | Save/edit your **JP** profile (same options). |
 | `/en-profile-edit-support` | Set one **EN** support page: `page` (required) + an `image` upload **or** an image `url`. |
 | `/jp-profile-edit-support` | Set one **JP** support page (same options). |
 
 The number of support pages is controlled by `SupportPages.PAGE_COUNT` in `config.js`.
+
+To remove content: clear your description with `clear_description`, and remove support pages with `clear_supports` (one number, a list like `1,3`, or `all`). Both live on the `*-profile-edit` commands. The `*-edit-support` commands only set a page. Empty pages are skipped in the paginated view.
 
 ## Run bot in a shell:
 
