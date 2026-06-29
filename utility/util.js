@@ -148,10 +148,7 @@ async function handlePaginationButton(client, interaction, db, pageCount) {
 async function rehostImages(channel, urls) {
   if (!channel || !urls || !urls.length) return { urls, persisted: false };
   try {
-    const msg = await channel.send({
-      content: 'Stored profile support image(s) below. Please do not delete this message.',
-      files: urls,
-    });
+    const msg = await channel.send({ files: urls });
     const hosted = [...msg.attachments.values()].map((a) => a.url);
     if (hosted.length === urls.length) return { urls: hosted, persisted: true };
     console.warn(`[REHOST] expected ${urls.length} attachment(s), got ${hosted.length}; keeping originals`);
